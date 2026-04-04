@@ -1,0 +1,14 @@
+{
+  "market_overview": "Market Overview",
+  "order_book": "Order Book",
+  "recent_trades": "Recent Trades",
+  "my_orders": "My Orders",
+  "buy_order": "Buy Order",
+  "sell_order": "Sell Order",
+  "confirm_investment": "Confirm Investment",
+  "price_circuit_breaker": "Circuit Breaker Triggered",
+  "market_paused": "Market paused due to high volatility",
+  "slippage_too_high": "Slippage too high, please reduce amount",
+  "24h_change": "24h Change",
+  "volume": "Volume"
+}

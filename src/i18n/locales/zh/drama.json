@@ -1,0 +1,20 @@
+{
+  "watch_episode": "观看剧集",
+  "episodes": "剧集列表",
+  "current_points": "当前积分",
+  "today_earned": "今日获得",
+  "like": "点赞",
+  "comment": "评论",
+  "share": "分享",
+  "free_views_remaining": "今日剩余免费次数：{{remaining}}/{{total}}",
+  "free_views_exhausted": "今日免费次数已用完",
+  "watch_ad_for_points": "观看广告获得积分兑换观看券",
+  "upgrade_vip": "或升级 VIP 享受无限观看",
+  "redeemed_success": "兑换成功！单日无限观看券有效期至 {{time}}",
+  "watch_ad": "观看广告",
+  "get_points": "获得 {{points}} 积分",
+  "daily_limit_reached": "广告积分已达今日上限",
+  "complete_watch": "完成观看获得积分",
+  "poe_mining": "PoE 挖矿",
+  "estimated_reward": "今日预计收益"
+}

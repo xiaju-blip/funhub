@@ -1,0 +1,21 @@
+{
+  "my_assets": "我的资产",
+  "my_positions": "我的持仓",
+  "transaction_history": "交易历史",
+  "points_history": "积分明细",
+  "vip_center": "VIP 中心",
+  "invite_friends": "邀请好友",
+  "security_settings": "安全设置",
+  "total_value": "投资组合总价值",
+  "reel_balance": "REEL 余额",
+  "my_dividends": "我的分红",
+  "daily_checkin": "每日签到",
+  "invite_code": "邀请码",
+  "share_link": "分享链接",
+  "copy": "复制",
+  "copied": "已复制！",
+  "invite_stats": "邀请统计",
+  "direct_invites": "直接邀请",
+  "indirect_invites": "间接邀请",
+  "total_rewards": "总奖励"
+}

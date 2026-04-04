@@ -1,0 +1,20 @@
+{
+  "watch_episode": "Watch Episode",
+  "episodes": "Episodes",
+  "current_points": "Current Points",
+  "today_earned": "Today Earned",
+  "like": "Like",
+  "comment": "Comment",
+  "share": "Share",
+  "free_views_remaining": "{{remaining}}/{{total}} free views remaining today",
+  "free_views_exhausted": "Daily free views exhausted",
+  "watch_ad_for_points": "Watch ads for points to redeem a pass",
+  "upgrade_vip": "or upgrade to VIP for unlimited access",
+  "redeemed_success": "Redeemed! Daily Unlimited Pass valid until {{time}}",
+  "watch_ad": "Watch Ad",
+  "get_points": "Get {{points}} Points",
+  "daily_limit_reached": "Daily limit reached for ad points",
+  "complete_watch": "Complete watching to get points",
+  "poe_mining": "PoE Mining",
+  "estimated_reward": "Estimated Reward Today"
+}

@@ -1,0 +1,14 @@
+{
+  "market_overview": "市场概览",
+  "order_book": "订单簿",
+  "recent_trades": "最近成交",
+  "my_orders": "我的挂单",
+  "buy_order": "买单",
+  "sell_order": "卖单",
+  "confirm_investment": "确认投资",
+  "price_circuit_breaker": "价格熔断触发",
+  "market_paused": "因波动过大，市场暂停交易",
+  "slippage_too_high": "滑点过高，请减少数量",
+  "24h_change": "24小时涨跌",
+  "volume": "成交量"
+}
