@@ -1,0 +1,20 @@
+{
+  "admin_panel": "管理后台",
+  "dashboard": "仪表盘",
+  "users_management": "用户管理",
+  "assets_management": "资产管理",
+  "content_management": "内容管理",
+  "withdrawals_pending": "提现审核",
+  "tasks_management": "任务管理",
+  "total_users": "总用户数",
+  "total_assets": "总资产项目",
+  "total_volume": "总交易额",
+  "dau": "日活跃用户",
+  "welcome_title": "欢迎来到 ReelRWA 管理后台",
+  "welcome_desc": "当前系统已按照开发文档 V13.1 完成全功能框架搭建，包含：",
+  "todo_1": "前端用户界面 + 国际化",
+  "todo_2": "后端 API 模块骨架",
+  "todo_3": "完整数据库表结构",
+  "todo_4": "业务功能细节开发",
+  "coming_soon": "功能开发中，敬请期待..."
+}

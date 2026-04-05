@@ -10,6 +10,7 @@ import Market from './pages/Market'
 import Profile from './pages/Profile'
 import Auth from './pages/Auth'
 import Stake from './pages/Stake'
+import AdminDashboard from './pages/admin/Dashboard'
 import ConnectWalletModal from './components/ConnectWalletModal'
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/market" element={<Market />} />
           <Route path="/stake" element={<Stake />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/admin/*" element={<AdminDashboard />} />
         </Routes>
       </main>
 

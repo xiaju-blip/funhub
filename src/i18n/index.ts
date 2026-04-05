@@ -17,6 +17,8 @@ import auth_en from './locales/en/auth.json'
 import auth_zh from './locales/zh/auth.json'
 import stake_en from './locales/en/stake.json'
 import stake_zh from './locales/zh/stake.json'
+import admin_en from './locales/en/admin.json'
+import admin_zh from './locales/zh/admin.json'
 
 const resources = {
   en: {
@@ -27,6 +29,7 @@ const resources = {
     profile: profile_en,
     auth: auth_en,
     stake: stake_en,
+    admin: admin_en,
   },
   zh: {
     common: common_zh,
@@ -36,6 +39,7 @@ const resources = {
     profile: profile_zh,
     auth: auth_zh,
     stake: stake_zh,
+    admin: admin_zh,
   },
 }
 

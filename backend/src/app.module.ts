@@ -11,6 +11,7 @@ import { StakeModule } from './stake/stake.module';
 import { TasksModule } from './tasks/tasks.module';
 import { AdModule } from './ad/ad.module';
 import { InviteModule } from './invite/invite.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { InviteModule } from './invite/invite.module';
     TasksModule,
     AdModule,
     InviteModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

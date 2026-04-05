@@ -1,0 +1,20 @@
+{
+  "admin_panel": "Admin Panel",
+  "dashboard": "Dashboard",
+  "users_management": "Users",
+  "assets_management": "Assets",
+  "content_management": "Content",
+  "withdrawals_pending": "Withdrawals",
+  "tasks_management": "Tasks",
+  "total_users": "Total Users",
+  "total_assets": "Total Assets",
+  "total_volume": "Total Volume",
+  "dau": "Daily Active Users",
+  "welcome_title": "Welcome to ReelRWA Admin Panel",
+  "welcome_desc": "The system has been fully structured according to the development document V13.1, including:",
+  "todo_1": "Frontend UI + i18n",
+  "todo_2": "Backend API modules skeleton",
+  "todo_3": "Complete database schema",
+  "todo_4": "Business logic development",
+  "coming_soon": "Coming soon..."
+}
