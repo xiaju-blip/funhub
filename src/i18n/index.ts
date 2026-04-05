@@ -13,6 +13,10 @@ import drama_en from './locales/en/drama.json'
 import drama_zh from './locales/zh/drama.json'
 import profile_en from './locales/en/profile.json'
 import profile_zh from './locales/zh/profile.json'
+import auth_en from './locales/en/auth.json'
+import auth_zh from './locales/zh/auth.json'
+import stake_en from './locales/en/stake.json'
+import stake_zh from './locales/zh/stake.json'
 
 const resources = {
   en: {
@@ -21,6 +25,8 @@ const resources = {
     trade: trade_en,
     drama: drama_en,
     profile: profile_en,
+    auth: auth_en,
+    stake: stake_en,
   },
   zh: {
     common: common_zh,
@@ -28,6 +34,8 @@ const resources = {
     trade: trade_zh,
     drama: drama_zh,
     profile: profile_zh,
+    auth: auth_zh,
+    stake: stake_zh,
   },
 }
 

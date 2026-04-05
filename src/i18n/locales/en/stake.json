@@ -1,0 +1,23 @@
+{
+  "stake": "Stake",
+  "total_staked": "Total Staked",
+  "my_staked": "My Staked",
+  "total_earned": "Total Earned",
+  "apy_history": "APY History",
+  "stake_pools": "Stake Pools",
+  "deposit": "Deposit",
+  "expected_earn": "Expected Earn",
+  "vip_bonus": "VIP APY Bonus",
+  "your_current_vip": "Your current VIP {level} → +{bonus}% extra APY",
+  "my_stakes": "My Stakes",
+  "lock_ends": "Lock ends",
+  "pending": "Pending",
+  "auto_compound": "Auto Compound",
+  "claim_reward": "Claim Reward",
+  "unstake": "Unstake",
+  "locked": "Locked",
+  "days": "Days",
+  "min_deposit": "Min Deposit",
+  "max_capacity": "Max Capacity",
+  "early_exit_penalty": "Early Exit Penalty"
+}

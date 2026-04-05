@@ -25,6 +25,7 @@ export default function Navbar({ onConnectWallet }: NavbarProps) {
     { label: t('common:market'), path: '/market' },
     { label: t('common:dramas'), path: '/dramas' },
     { label: t('common:assets'), path: '/assets' },
+    { label: t('common:stake'), path: '/stake' },
     { label: t('common:profile'), path: '/profile' },
   ]
 
@@ -85,12 +86,14 @@ export default function Navbar({ onConnectWallet }: NavbarProps) {
                 </span>
               </div>
             ) : (
-              <button
-                onClick={onConnectWallet}
-                className="hidden md:block px-6 py-2 bg-gradient-to-r from-primary to-secondary rounded-full font-medium text-white glow transition-all hover:scale-105"
-              >
-                {t('common:connect_wallet')}
-              </button>
+              <div className="hidden md:flex gap-2">
+                <Link
+                  to="/auth"
+                  className="px-6 py-2 bg-gradient-to-r from-primary to-secondary rounded-full font-medium text-white glow transition-all hover:scale-105"
+                >
+                  {t('auth:sign_in')}
+                </Link>
+              </div>
             )}
 
             {/* Mobile menu button */}
@@ -124,15 +127,24 @@ export default function Navbar({ onConnectWallet }: NavbarProps) {
               </Link>
             ))}
             {!isConnected && (
-              <button
-                onClick={() => {
-                  onConnectWallet()
-                  setIsMobileMenuOpen(false)
-                }}
-                className="w-full mt-4 px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white"
-              >
-                {t('common:connect_wallet')}
-              </button>
+              <div className="mt-4 space-y-2">
+                <Link
+                  to="/auth"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium text-white text-center"
+                >
+                  {t('auth:sign_in')}
+                </Link>
+                <button
+                  onClick={() => {
+                    onConnectWallet()
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="w-full px-6 py-3 bg-dark-lighter border border-gray-700 rounded-lg font-medium text-center"
+                >
+                  {t('common:connect_wallet')}
+                </button>
+              </div>
             )}
           </div>
         </div>

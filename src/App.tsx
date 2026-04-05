@@ -8,6 +8,8 @@ import DramaPlayer from './pages/DramaPlayer'
 import AssetDetail from './pages/AssetDetail'
 import Market from './pages/Market'
 import Profile from './pages/Profile'
+import Auth from './pages/Auth'
+import Stake from './pages/Stake'
 import ConnectWalletModal from './components/ConnectWalletModal'
 
 function App() {
@@ -29,9 +31,11 @@ function App() {
       <main className="pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/drama/:id" element={<DramaPlayer />} />
           <Route path="/asset/:id" element={<AssetDetail />} />
           <Route path="/market" element={<Market />} />
+          <Route path="/stake" element={<Stake />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>

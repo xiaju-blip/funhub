@@ -1,0 +1,23 @@
+{
+  "stake": "质押",
+  "total_staked": "总质押量",
+  "my_staked": "我的质押",
+  "total_earned": "累计收益",
+  "apy_history": "年化历史",
+  "stake_pools": "质押池",
+  "deposit": "存入",
+  "expected_earn": "预期收益",
+  "vip_bonus": "VIP 年化加成",
+  "your_current_vip": "当前 VIP {level} → 额外 +{bonus}% APY",
+  "my_stakes": "我的质押",
+  "lock_ends": "锁仓结束",
+  "pending": "待领取",
+  "auto_compound": "自动复投",
+  "claim_reward": "领取收益",
+  "unstake": "赎回",
+  "locked": "锁定中",
+  "days": "天",
+  "min_deposit": "最小存入",
+  "max_capacity": "最大容量",
+  "early_exit_penalty": "提前赎回罚息"
+}
