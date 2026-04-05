@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # PostgreSQL 主数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: reelrwa-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: reelrwa
+      POSTGRES_PASSWORD: reelrwa_password
+      POSTGRES_DB: reelrwa
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./deployment/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - reelrwa-network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    container_name: reelrwa-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - reelrwa-network
+
+  # 后端 API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../deployment/Dockerfile.backend
+    container_name: reelrwa-backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=reelrwa
+      - DB_PASSWORD=reelrwa_password
+      - DB_DATABASE=reelrwa
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=your_jwt_secret_key_change_in_production
+      - CHAIN_RPC_URL=https://bsc-dataseed.binance.org/
+    networks:
+      - reelrwa-network
+
+  # 前端静态文件 (Nginx)
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./deployment/Dockerfile.frontend
+    container_name: reelrwa-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - reelrwa-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  reelrwa-network:
+    driver: bridge
