@@ -1,0 +1,23 @@
+app = "reelrwa-backend"
+primary_region = "iad"
+
+[build]
+  image = "flyio/node:20"
+
+[deploy]
+  release_command = "npm run migration:run"
+
+[env]
+  NODE_ENV = "production"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[statics]]
+  guest_path = "/app/public"
+  url_prefix = "/static/"
