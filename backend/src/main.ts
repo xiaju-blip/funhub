@@ -20,7 +20,7 @@ async function bootstrap() {
   app.enableCors();
 
   const port = configService.get<number>('PORT', 3001);
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   console.log(`ReelRWA Backend running on port ${port}`);
 }
 bootstrap();
