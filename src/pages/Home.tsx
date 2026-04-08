@@ -5,8 +5,10 @@ import AssetCard from '../components/AssetCard'
 import DramaCard from '../components/DramaCard'
 import { ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { api, type Asset, type Drama } from '../services/api'
 
-// Mock data
+// Fallback mock data if API is not available
 const MOCK_ASSETS = [
   {
     id: '1',
@@ -123,6 +125,34 @@ const MOCK_ANNOUNCEMENTS = [
 export default function Home() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const [assets, setAssets] = useState<Asset[]>([])
+  const [dramas, setDramas] = useState<Drama[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [assetsData, dramasData] = await Promise.all([
+          api.getAssets(),
+          api.getDramas()
+        ])
+        setAssets(assetsData)
+        setDramas(dramasData)
+      } catch (error) {
+        console.error('Failed to fetch data from API:', error)
+        // Fallback to mock data
+        setAssets(MOCK_ASSETS)
+        setDramas(MOCK_DRAMAS)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const displayAssets = assets.length > 0 ? assets : MOCK_ASSETS
+  const displayDramas = dramas.length > 0 ? dramas : MOCK_DRAMAS
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -212,7 +242,7 @@ export default function Home() {
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_ASSETS.map((asset) => (
+          {displayAssets.map((asset) => (
             <AssetCard key={asset.id} {...asset} />
           ))}
         </div>
@@ -235,7 +265,7 @@ export default function Home() {
           </button>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {MOCK_DRAMAS.map((drama) => (
+          {displayDramas.map((drama) => (
             <DramaCard key={drama.id} {...drama} />
           ))}
         </div>

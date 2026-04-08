@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { cn } from '../utils/cn'
+import { api, type Asset } from '../services/api'
 
-// Mock data
+// Fallback mock data
 const MOCK_ASSET = {
   id: '1',
   title: {
@@ -16,7 +17,7 @@ const MOCK_ASSET = {
     en: 'This is a hit urban short drama with over 100 million total views, stable traffic growth and huge dividend potential. Investors can share playback and advertising revenue by holding IP tokens.'
   },
   cover: 'https://images.unsplash.com/photo-1578632767115-351416917565?w=1200&h=600&fit=crop',
-  apy: 18.5,
+  apr: 18.5,
   targetAmount: 500000,
   raisedAmount: 425000,
   durationDays: 180,
@@ -34,22 +35,67 @@ const MOCK_ASSET = {
 export default function AssetDetail() {
   const { id } = useParams()
   const { t, i18n } = useTranslation()
+  const [asset, setAsset] = useState<Asset | null>(null)
+  const [loading, setLoading] = useState(true)
   const [amount, setAmount] = useState('')
-  // id is used for API data fetching in production
-  void id
-  const progress = Math.round((MOCK_ASSET.raisedAmount / MOCK_ASSET.targetAmount) * 100)
-  const estimatedShare = Number(amount) / MOCK_ASSET.currentPrice || 0
-  const estimatedDividend = (estimatedShare * MOCK_ASSET.apy / 100 / 365 * MOCK_ASSET.durationDays).toFixed(2)
 
-  const currentTitle = i18n.language === 'zh' ? MOCK_ASSET.title.zh : MOCK_ASSET.title.en
-  const currentDescription = i18n.language === 'zh' ? MOCK_ASSET.description.zh : MOCK_ASSET.description.en
+  useEffect(() => {
+    const fetchAsset = async () => {
+      if (!id) return
+      
+      try {
+        const data = await api.getAsset(id)
+        setAsset(data)
+      } catch (error) {
+        console.error('Failed to fetch asset from API:', error)
+        // Fallback to mock data
+        setAsset(MOCK_ASSET as any)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAsset()
+  }, [id])
+
+  const currentAsset = asset || (MOCK_ASSET as any)
+  const progress = Math.round((currentAsset.raisedAmount / currentAsset.targetAmount) * 100)
+  const estimatedShare = Number(amount) / currentAsset.currentPrice || 0
+  const estimatedDividend = (estimatedShare * currentAsset.apr / 100 / 365 * currentAsset.durationDays).toFixed(2)
+
+  const currentTitle = i18n.language === 'zh' ? currentAsset.title.zh : currentAsset.title.en
+  const currentDescription = i18n.language === 'zh' ? currentAsset.description.zh : currentAsset.description.en
+
+  const handleInvest = async () => {
+    if (!id || !amount || Number(amount) <= 0) return
+    
+    try {
+      await api.investAsset(id, Number(amount))
+      // Refresh data after successful investment
+      const refreshed = await api.getAsset(id)
+      setAsset(refreshed)
+    } catch (error) {
+      console.error('Investment failed:', error)
+      alert('Investment failed, please try again')
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center py-20">
+          <div className="text-gray-400">Loading...</div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header with cover */}
       <div className="relative rounded-3xl overflow-hidden mb-8">
         <img 
-          src={MOCK_ASSET.cover} 
+          src={currentAsset.cover} 
           alt={currentTitle}
           className="w-full h-64 md:h-96 object-cover"
         />
@@ -58,7 +104,7 @@ export default function AssetDetail() {
           <h1 className="text-3xl md:text-5xl font-bold mb-4">{currentTitle}</h1>
           <div className="flex flex-wrap gap-4">
             <div className="px-4 py-2 bg-primary/90 rounded-full text-white font-semibold">
-              {MOCK_ASSET.apy}% {t('common:apr')}
+              {currentAsset.apr}% {t('common:apr')}
             </div>
             <div className="px-4 py-2 bg-white/10 backdrop-blur rounded-full text-white font-medium">
               {progress}% {t('common:progress')}
@@ -81,7 +127,7 @@ export default function AssetDetail() {
             <h2 className="text-2xl font-bold mb-6">{t('common:dividends')} {t('common:history')}</h2>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={MOCK_ASSET.dividendHistory}>
+                <AreaChart data={(currentAsset as any).dividendHistory || MOCK_ASSET.dividendHistory}>
                   <defs>
                     <linearGradient id="colorDividend" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8}/>
@@ -133,22 +179,22 @@ export default function AssetDetail() {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="text-gray-400">{t('common:current_price')}</span>
-                <span className="font-semibold">${MOCK_ASSET.currentPrice.toFixed(3)}</span>
+                <span className="font-semibold">${currentAsset.currentPrice.toFixed(3)}</span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-gray-400">{t('common:target')}</span>
-                <span className="font-semibold">${MOCK_ASSET.targetAmount.toLocaleString()}</span>
+                <span className="font-semibold">${currentAsset.targetAmount.toLocaleString()}</span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-gray-400">{t('common:raised')}</span>
-                <span className="font-semibold">${MOCK_ASSET.raisedAmount.toLocaleString()}</span>
+                <span className="font-semibold">${currentAsset.raisedAmount.toLocaleString()}</span>
               </div>
               
               <div className="flex justify-between">
                 <span className="text-gray-400">{t('common:apr')}</span>
-                <span className="font-semibold text-green-400">{MOCK_ASSET.apy}%</span>
+                <span className="font-semibold text-green-400">{currentAsset.apr}%</span>
               </div>
 
               <div>
@@ -189,15 +235,16 @@ export default function AssetDetail() {
               )}
 
               <button 
-                disabled={!amount || Number(amount) <= 0}
+                onClick={handleInvest}
+                disabled={!amount || Number(amount) <= 0 || loading}
                 className={cn(
                   'w-full py-4 rounded-xl font-semibold text-white glow transition-all hover:scale-[1.02]',
-                  (!amount || Number(amount) <= 0) 
+                  (!amount || Number(amount) <= 0 || loading) 
                     ? 'bg-gray-600 cursor-not-allowed'
                     : 'bg-gradient-to-r from-primary to-secondary'
                 )}
               >
-                {t('common:invest_now')}
+                {loading ? 'Loading...' : t('common:invest_now')}
               </button>
 
               <p className="text-xs text-gray-500 text-center">

@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { Mail, Phone, Lock, ArrowRight, Wallet } from 'lucide-react'
 import { cn } from '../utils/cn'
+import { api } from '../services/api'
 
 type AuthMode = 'login' | 'register'
 type AuthMethod = 'email' | 'phone' | 'wallet'
 
 export default function Auth() {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [mode, setMode] = useState<AuthMode>('login')
   const [authMethod, setAuthMethod] = useState<AuthMethod>('email')
   const [agreeTerms, setAgreeTerms] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const [formData, setFormData] = useState({
     email: '',
@@ -20,21 +25,47 @@ export default function Auth() {
     confirmPassword: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Submit auth form', { mode, authMethod, formData })
-    // Handle authentication here
+    setError('')
+    setLoading(true)
+
+    try {
+      let response
+      if (mode === 'login') {
+        const credentials = authMethod === 'email' 
+          ? { email: formData.email, password: formData.password }
+          : { phone: formData.phone, password: formData.password }
+        response = await api.login(credentials)
+      } else {
+        const data = authMethod === 'email'
+          ? { email: formData.email, password: formData.password, code: formData.code }
+          : { phone: formData.phone, password: formData.password, code: formData.code }
+        response = await api.register(data)
+      }
+
+      if (response.access_token) {
+        localStorage.setItem('auth_token', response.access_token)
+        navigate('/')
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Authentication failed, please try again')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleGoogleLogin = () => {
     console.log('Google OAuth login')
-    // Handle Google OAuth here
+    // Redirect to Google OAuth
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`
   }
 
-  const sendCode = () => {
+  const sendCode = async () => {
     const target = authMethod === 'email' ? formData.email : formData.phone
     console.log('Send verification code to', target)
-    // Send code logic
+    // TODO: Implement send code API
+    alert('Verification code sent (not implemented yet)')
   }
 
   const handleWalletConnect = () => {
@@ -68,6 +99,12 @@ export default function Auth() {
               <span>Continue with Google</span>
             </button>
           </div>
+
+          {error && (
+            <div className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm">
+              {error}
+            </div>
+          )}
 
           <div className="relative flex items-center mb-6">
             <div className="flex-grow border-t border-gray-700"></div>
@@ -258,11 +295,11 @@ export default function Auth() {
             {authMethod !== 'wallet' && (
               <button
                 type="submit"
-                disabled={mode === 'register' && !agreeTerms}
+                disabled={(mode === 'register' && !agreeTerms) || loading}
                 className="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold text-white glow transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {mode === 'login' ? t('auth:login') : t('auth:register')}
-                <ArrowRight size={18} className="inline-block ml-2" />
+                {loading ? 'Loading...' : (mode === 'login' ? t('auth:login') : t('auth:register'))}
+                {!loading && <ArrowRight size={18} className="inline-block ml-2" />}
               </button>
             )}
           </form>
