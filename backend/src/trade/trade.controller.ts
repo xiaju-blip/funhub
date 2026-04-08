@@ -1,24 +1,39 @@
-import { Controller, Get, Post, Body, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Request, Delete, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { TradeService } from './trade.service';
 
-@Controller('orders')
-@UseGuards(AuthGuard('jwt'))
+@Controller('trade')
 export class TradeController {
   constructor(private readonly tradeService: TradeService) {}
 
-  @Get('book')
-  getOrderBook(@Query('assetId') assetId: string) {
-    return this.tradeService.getOrderBook(Number(assetId));
+  @Get('orderbook')
+  getOrderBook() {
+    return this.tradeService.getOrderBook();
   }
 
-  @Post()
-  placeOrder(@Request() req, @Body() body: any) {
-    return this.tradeService.placeOrder(req.user.userId, body);
+  @Get('history')
+  getTradeHistory() {
+    return this.tradeService.getTradeHistory();
   }
 
-  @Get('my')
+  @Get('my-orders')
+  @UseGuards(AuthGuard('jwt'))
   getMyOrders(@Request() req) {
     return this.tradeService.getMyOrders(req.user.userId);
+  }
+
+  @Post('place')
+  @UseGuards(AuthGuard('jwt'))
+  placeOrder(
+    @Request() req,
+    @Body() body: { type: number; amount: number; price: number },
+  ) {
+    return this.tradeService.placeOrder(req.user.userId, body.type, body.amount, body.price);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  cancelOrder(@Request() req, @Param('id') id: string) {
+    return this.tradeService.cancelOrder(req.user.userId, Number(id));
   }
 }

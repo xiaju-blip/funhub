@@ -1,11 +1,18 @@
 import { Controller, Get, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { StakeService } from './stake.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 
 @Controller('stake')
 @UseGuards(AuthGuard('jwt'))
 export class StakeController {
-  constructor(private readonly stakeService: StakeService) {}
+  constructor(
+    private readonly stakeService: StakeService,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
 
   @Get('overview')
   getOverview() {
@@ -23,8 +30,9 @@ export class StakeController {
   }
 
   @Post('deposit')
-  deposit(@Request() req, @Body() body: { poolId: number; amount: number }) {
-    return this.stakeService.deposit(req.user.userId, body.poolId, body.amount);
+  async deposit(@Request() req, @Body() body: { poolId: number; amount: number }) {
+    const user = await this.userRepository.findOne({ where: { id: req.user.userId } });
+    return this.stakeService.deposit(req.user.userId, body.poolId, body.amount, user.vipLevel);
   }
 
   @Post('claim')

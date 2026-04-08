@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -34,6 +35,18 @@ export class AuthController {
   @Post('login/wallet')
   loginWallet(@Body() body: { address: string; signature: string }) {
     return this.authService.loginWallet(body.address, body.signature);
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  googleAuth() {
+    // Handled by passport
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleCallback(@Req() req) {
+    return this.authService.googleLogin(req);
   }
 
   @Post('reset-password')

@@ -23,10 +23,22 @@ export class User {
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ type: 'tinyint', default: 0 })
+  @Column({ nullable: true })
+  avatarUrl: string;
+
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
+  @Column({ type: 'smallint', default: 0 })
+  emailVerified: number;
+
+  @Column({ type: 'smallint', default: 0 })
   kycLevel: number;
 
-  @Column({ type: 'tinyint', default: 0 })
+  @Column({ type: 'smallint', default: 0 })
   vipLevel: number;
 
   @Column({ unique: true, length: 20 })
@@ -41,7 +53,7 @@ export class User {
   @Column({ length: 50, default: 'UTC' })
   timezone: string;
 
-  @Column({ type: 'tinyint', default: 1 })
+  @Column({ type: 'smallint', default: 1 })
   status: number;
 
   @CreateDateColumn()

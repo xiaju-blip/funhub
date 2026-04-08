@@ -145,4 +145,39 @@ export class AuthService {
     const { passwordHash, ...result } = user;
     return result;
   }
+
+  async googleLogin(req: any) {
+    if (!req.user) {
+      throw new UnauthorizedException('Google authentication failed');
+    }
+
+    const { email, firstName, lastName, picture } = req.user;
+
+    // Check if user already exists
+    let user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      // Create new user
+      const inviteCode = randomBytes(8).toString('hex').slice(0, 8);
+      user = this.userRepository.create({
+        email,
+        firstName,
+        lastName,
+        avatarUrl: picture,
+        inviteCode,
+        emailVerified: 1, // Google already verified
+      });
+      await this.userRepository.save(user);
+    }
+
+    if (user.status !== 1) {
+      throw new UnauthorizedException('Account disabled');
+    }
+
+    const token = this.generateToken(user);
+    return {
+      token,
+      userInfo: this.sanitizeUser(user),
+    };
+  }
 }
