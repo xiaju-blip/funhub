@@ -1,25 +1,36 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
-  "projects": [
+  "services": [
     {
-      "name": "reelrwa-frontend",
+      "name": "frontend",
       "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "context": "."
       },
       "deploy": {
         "startCommand": "nginx -g 'daemon off;'",
-        "port": 8080
+        "ports": [
+          {
+            "port": 8080,
+            "protocol": "http"
+          }
+        ]
       }
     },
     {
-      "name": "reelrwa-backend",
-      "root": "backend",
+      "name": "backend",
       "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "backend/Dockerfile",
+        "context": "backend/.."
       },
       "deploy": {
         "startCommand": "node dist/main.js",
-        "port": 3000
+        "ports": [
+          {
+            "port": 3000,
+            "protocol": "http"
+          }
+        ]
       }
     }
   ]
