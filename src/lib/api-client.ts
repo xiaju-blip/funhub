@@ -11,8 +11,15 @@ const getApiBaseUrl = () => {
   
   // Detect Railway frontend domain -> auto-detect backend domain
   if (window.location.hostname.includes('railway.app')) {
-    // Replace frontend- prefix with backend-
-    const backendHost = window.location.hostname.replace(/frontend-([^.-]+)-/, 'backend-$1-');
+    // Handle different Railway naming patterns
+    let backendHost = window.location.hostname;
+    if (backendHost.includes('frontend-')) {
+      // pattern: reelrwa-frontend-production-da83.up.railway.app
+      backendHost = backendHost.replace(/frontend-/, 'backend-');
+    } else if (backendHost.includes('-frontend-')) {
+      // pattern: project-name-frontend-hash.up.railway.app
+      backendHost = backendHost.replace(/-frontend-/, '-backend-');
+    }
     return `${window.location.protocol}//${backendHost}`;
   }
   
