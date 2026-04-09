@@ -1,6 +1,26 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// Use environment variable if provided
+// In production on Railway with different subdomains:
+// frontend: https://reelrwa-frontend-production-da83.up.railway.app
+// backend: https://reelrwa-backend-production.up.railway.app
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // Detect Railway frontend domain -> auto-detect backend domain
+  if (window.location.hostname.includes('railway.app')) {
+    // Replace frontend- prefix with backend-
+    const backendHost = window.location.hostname.replace(/frontend-([^.-]+)-/, 'backend-$1-');
+    return `${window.location.protocol}//${backendHost}`;
+  }
+  
+  // Local development
+  return 'http://localhost:3001';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
