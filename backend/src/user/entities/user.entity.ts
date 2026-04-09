@@ -56,6 +56,9 @@ export class User {
   @Column({ type: 'smallint', default: 1 })
   status: number;
 
+  @Column({ type: 'smallint', default: 0 })
+  isAdmin: number; // 0: 普通用户, 1: 管理员
+
   @CreateDateColumn()
   createdAt: Date;
 }

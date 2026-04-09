@@ -204,6 +204,100 @@ export const api = {
     const response = await apiClient.get('/invite/records');
     return response.data;
   },
+
+  // Admin
+  admin: {
+    // Dashboard
+    getDashboard: async () => {
+      const response = await apiClient.get('/admin/dashboard');
+      return response.data;
+    },
+
+    // Users
+    getUsers: async (page: number = 1, limit: number = 20) => {
+      const response = await apiClient.get('/admin/users', { params: { page, limit } });
+      return response.data;
+    },
+
+    updateUserKyc: async (id: number, level: number) => {
+      const response = await apiClient.put(`/admin/users/${id}/kyc`, { id, level });
+      return response.data;
+    },
+
+    updateUserStatus: async (id: number, status: number) => {
+      const response = await apiClient.put(`/admin/users/${id}/status`, { id, status });
+      return response.data;
+    },
+
+    // Assets
+    getAssets: async () => {
+      const response = await apiClient.get('/admin/assets');
+      return response.data;
+    },
+
+    createAsset: async (data: any) => {
+      const response = await apiClient.post('/admin/assets', data);
+      return response.data;
+    },
+
+    updateAsset: async (data: any) => {
+      const response = await apiClient.put(`/admin/assets/${data.id}`, data);
+      return response.data;
+    },
+
+    deleteAsset: async (id: number) => {
+      const response = await apiClient.delete(`/admin/assets/${id}`, { data: { id } });
+      return response.data;
+    },
+
+    // Dramas
+    getDramas: async () => {
+      const response = await apiClient.get('/admin/dramas');
+      return response.data;
+    },
+
+    createDrama: async (data: any) => {
+      const response = await apiClient.post('/admin/dramas', data);
+      return response.data;
+    },
+
+    updateDrama: async (data: any) => {
+      const response = await apiClient.put(`/admin/dramas/${data.id}`, data);
+      return response.data;
+    },
+
+    // Withdrawals
+    getWithdrawals: async (status?: number) => {
+      const response = await apiClient.get('/admin/withdrawals', { params: { status } });
+      return response.data;
+    },
+
+    approveWithdrawal: async (id: number, auditRemark: string = '') => {
+      const response = await apiClient.post(`/admin/withdrawals/${id}/approve`, { id, auditRemark });
+      return response.data;
+    },
+
+    rejectWithdrawal: async (id: number, rejectReason: string) => {
+      const response = await apiClient.post(`/admin/withdrawals/${id}/reject`, { id, rejectReason });
+      return response.data;
+    },
+
+    // Tasks
+    getTasks: async () => {
+      const response = await apiClient.get('/admin/tasks');
+      return response.data;
+    },
+
+    createTask: async (data: any) => {
+      const response = await apiClient.post('/admin/tasks', data);
+      return response.data;
+    },
+
+    updateTaskStatus: async (id: number, status: number) => {
+      const response = await apiClient.put(`/admin/tasks/${id}/status`, { id, status });
+      return response.data;
+    },
+  },
 };
 
 export default api;

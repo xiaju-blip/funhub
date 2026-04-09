@@ -16,11 +16,16 @@ const MOCK_ASSETS = [
       zh: '逆袭千金：总裁的隐婚新娘',
       en: 'The Rebellious Heiress: CEO\'s Secret Wife'
     },
+    description: {
+      zh: '一场精心策划的阴谋，让她从千金大小姐变成一无所有。隐婚嫁给神秘总裁，看她如何逆袭复仇...',
+      en: 'A well-planned conspiracy turns her from a wealthy heiress into nothing. Married secretly to a mysterious CEO, watch how she fights back...'
+    },
     cover: 'https://images.unsplash.com/photo-1578632767115-351416917565?w=800&h=450&fit=crop',
     apr: 18.5,
     targetAmount: 500000,
     raisedAmount: 425000,
-    durationDays: 180
+    durationDays: 180,
+    currentPrice: 100.0
   },
   {
     id: '2',
@@ -28,11 +33,16 @@ const MOCK_ASSETS = [
       zh: '龙域战神：都市归来',
       en: 'War God Returns to City'
     },
+    description: {
+      zh: '十年戎马，战神归乡。曾经的耻辱，今日百倍奉还！',
+      en: 'Ten years of war, the god of war returns to the city. Past shame will be repaid a hundredfold today!'
+    },
     cover: 'https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=800&h=450&fit=crop',
     apr: 15.2,
     targetAmount: 300000,
     raisedAmount: 210000,
-    durationDays: 90
+    durationDays: 90,
+    currentPrice: 85.5
   },
   {
     id: '3',
@@ -40,11 +50,16 @@ const MOCK_ASSETS = [
       zh: '星际情缘：异星邂逅',
       en: 'Star Crossed: Alien Encounter'
     },
+    description: {
+      zh: '遥远星际，人类探险家与异星公主的浪漫邂逅，跨越星系的爱情故事',
+      en: 'A romantic encounter between a human explorer and an alien princess among the stars, a love story across galaxies'
+    },
     cover: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=450&fit=crop',
     apr: 22.8,
     targetAmount: 800000,
     raisedAmount: 320000,
-    durationDays: 365
+    durationDays: 365,
+    currentPrice: 120.0
   }
 ]
 
@@ -127,7 +142,6 @@ export default function Home() {
   const navigate = useNavigate()
   const [assets, setAssets] = useState<Asset[]>([])
   const [dramas, setDramas] = useState<Drama[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,8 +157,6 @@ export default function Home() {
         // Fallback to mock data
         setAssets(MOCK_ASSETS)
         setDramas(MOCK_DRAMAS)
-      } finally {
-        setLoading(false)
       }
     }
 
